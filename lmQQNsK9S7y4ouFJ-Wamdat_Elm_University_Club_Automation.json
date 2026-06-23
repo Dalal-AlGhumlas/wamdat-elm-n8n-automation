@@ -1,0 +1,709 @@
+{
+  "name": "Wamdat Elm University Club Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "=1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1604266199,
+          "mode": "list",
+          "cachedResultName": "ردود النموذج 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0/edit#gid=1604266199"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "id": "9b92861e-4f82-44ee-9f38-be35898ee99a",
+      "name": "New Form Submission",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        176,
+        224
+      ],
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "PQ3pBeuTg8nC94mO",
+          "name": "Google Sheets Trigger OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an Arabic editorial assistant for a university initiative called \"Wamdat Elm\".\n\nYour task:\n1. Rewrite the submitted text in clear formal Arabic.\n2. Generate a short attractive Arabic title.\n\nRules:\n- Rewrite the text in clear formal Arabic.\n- Keep the original meaning exactly.\n- Do not add new information.\n- Do not add hashtags.\n- Do not add a subtitle.\n- Use Arabic letters and standard punctuation only.\n- Do not use Chinese, Japanese, Korean, Latin, emoji, decorative symbols, or strange characters.\n\n- Return the answer exactly in this format only:\n\nTITLE: اكتب العنوان هنا\nTEXT: اكتب النص المعاد صياغته هنا\n- Use Arabic letters and standard punctuation only.\n- Do not use Chinese, Japanese, Korean, Latin, emoji, decorative symbols, or strange characters.\n- Do not add separators or special symbols.\nSubmitted text:{{ $json['الومضة : شاركنا  نص المشاركة بطريقة مبسطة'] }}",
+        "options": {
+          "systemMessage": "أنت محرر محتوى محترف متخصص في اللغة العربية الفصحى. مهمتك هي تحسين النصوص وإعادة صياغتها بشكل احترافي."
+        }
+      },
+      "id": "350b18a1-b683-416c-a234-8776d4dcb12f",
+      "name": "AI Content Processor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        432,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0",
+          "mode": "list",
+          "cachedResultName": "ومضة_علم",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1604266199,
+          "mode": "list",
+          "cachedResultName": "ردود النموذج 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0/edit#gid=1604266199"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Output": "={{ $('Parse AI Result').item.json.aiText }}",
+            "Status": "=Processed",
+            "AI Title ": "={{ $('Parse AI Result').item.json.aiTitle }}",
+            "Submission ID": "={{ $json[\"Submission ID\"] }}"
+          },
+          "matchingColumns": [
+            "Submission ID"
+          ],
+          "schema": [
+            {
+              "id": "طابع زمني",
+              "displayName": "طابع زمني",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "الأسم ",
+              "displayName": "الأسم ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "نوع المشاركة ",
+              "displayName": "نوع المشاركة ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "الومضة : شاركنا  نص المشاركة بطريقة مبسطة",
+              "displayName": "الومضة : شاركنا  نص المشاركة بطريقة مبسطة",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ملاحظات: أي توضيحات، اقتراحات، أو مصادر",
+              "displayName": "ملاحظات: أي توضيحات، اقتراحات، أو مصادر",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Output",
+              "displayName": "AI Output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI Title ",
+              "displayName": "AI Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Design Link ",
+              "displayName": "Design Link ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED"
+        }
+      },
+      "id": "9734f07f-a7c6-4d48-a52d-36b78a33fb69",
+      "name": "Save AI Output to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        208
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CcFisOU2FCmmI3ED",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "pptx_file",
+        "name": "={{ $('Create folder').item.json.id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "simplifyOutput": true
+        }
+      },
+      "id": "8d4e026b-abd7-48f0-8b4a-799a8a4308a3",
+      "name": "Upload to Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1552,
+        208
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "nhlgnrabj9eyhMNj",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0",
+          "mode": "list",
+          "cachedResultName": "ومضة_علم",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1604266199,
+          "mode": "list",
+          "cachedResultName": "ردود النموذج 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ehR-FJqpnFdF2f_oAwQ_yMMT43sz7p51MsR7XhvV0T0/edit#gid=1604266199"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Design Link ": "=https://drive.google.com/file/d/{{ $json.id }}/view",
+            "Submission ID": "={{ $('Parse AI Result').item.json[\"Submission ID\"] }}"
+          },
+          "matchingColumns": [
+            "Submission ID"
+          ],
+          "schema": [
+            {
+              "id": "TIME",
+              "displayName": "TIME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "الأسم ",
+              "displayName": "الأسم ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "نوع المشاركة ",
+              "displayName": "نوع المشاركة ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "الومضة : شاركنا  نص المشاركة بطريقة مبسطة",
+              "displayName": "الومضة : شاركنا  نص المشاركة بطريقة مبسطة",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ملاحظات: أي توضيحات، اقتراحات، أو مصادر",
+              "displayName": "ملاحظات: أي توضيحات، اقتراحات، أو مصادر",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Output",
+              "displayName": "AI Output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Title ",
+              "displayName": "AI Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Design Link ",
+              "displayName": "Design Link ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "731fc972-269a-42da-835b-ab25714fe923",
+      "name": "Save Links to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1760,
+        208
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CcFisOU2FCmmI3ED",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "llama-3.3-70b-versatile",
+          "mode": "list",
+          "cachedResultName": "llama-3.3-70b-versatile"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        464
+      ],
+      "id": "ddcd17be-f462-40bb-8e97-583ebc103cd2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "jGaOxxWY7rSTDVe7",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiItems = $input.all();\nconst formItems = $('New Form Submission').all();\n\nfunction cleanMarkers(text = '') {\n  return String(text || '')\n    .replace(/TITLE\\s*:/gi, '')\n    .replace(/TEXT\\s*:/gi, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction cleanStrangeChars(text = '') {\n  return String(text || '')\n    .replace(/[^\\u0600-\\u06FF0-9\\s،؛؟.!:\"'()\\-]/g, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction getParticipantName(formRow = {}) {\n  return (\n    formRow['الأسم'] ||\n    formRow['الاسم'] ||\n    formRow['الإسم'] ||\n    formRow['اسم'] ||\n    formRow['اسم المشارك'] ||\n    Object.entries(formRow).find(([key]) =>\n      String(key).replace(/\\s/g, '').includes('اسم')\n    )?.[1] ||\n    ''\n  );\n}\n\nreturn aiItems.map((item, index) => {\n  const aiOutput = String(item.json.output || '');\n  const formRow = formItems[index]?.json || {};\n\n  let aiTitle = 'ومضة علم';\n  let aiText = aiOutput;\n\n  // Extract title\n  const titleMatch = aiOutput.match(/TITLE:\\s*(.*)/i);\n  if (titleMatch) {\n    aiTitle = titleMatch[1].trim();\n  }\n\n  // Extract text\n  const textMatch = aiOutput.match(/TEXT:\\s*([\\s\\S]*)/i);\n  if (textMatch) {\n    aiText = textMatch[1].trim();\n  }\n\n  // Clean title and text\n  aiTitle = cleanStrangeChars(cleanMarkers(aiTitle));\n  aiText = cleanStrangeChars(cleanMarkers(aiText));\n\n  // Get participant name from sheet\n  const participantName = String(getParticipantName(formRow)).trim();\n\n  return {\n    json: {\n      ...formRow,\n      aiTitle,\n      aiText,\n      participantName,\n      status: 'Processed'\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        208
+      ],
+      "id": "435ce75c-7c51-4a5c-a694-2232abb027d8",
+      "name": "Parse AI Result"
+    },
+    {
+      "parameters": {
+        "content": "## دلال الغملاس \n###  تخصص تقنية معلومات جامعة الملك سعود\nX :@1sdii\nLinkedin : www.linkedin.com/in/dalal-alghumlas-55565a335",
+        "width": 448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        432,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "4044173a-83ab-4841-a010-98b8e7d5e9c7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 1- استقبال المشاركات من Google Form وحفظها في Google Sheets.\n### 2- قراءة كل مشاركة يدويًا من الشيت.\n### 3- تعديل الصياغة وتصحيح الأخطاء يدويًا.\n### 4- اختيار عنوان مناسب لكل مشاركة.\n### 5- نسخ النص والعنوان إلى قالب التصميم يدويًا.\n### 6- حفظ التصميم ورفعه أو مشاركته بعد الانتهاء.\n",
+        "height": 192,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1776,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "4ca8a219-c428-48d2-af5c-91e606a969aa",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 1- عنوان للنص \n### 2- تحسين صياغة النص والتأكد من عدم وجود اخطاء إملائية",
+        "color": "#9B3B98"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        352,
+        608
+      ],
+      "typeVersion": 1,
+      "id": "ae47055a-0a12-4684-b021-a465470367fe",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# ومضة علم 💡\n",
+        "height": 80,
+        "width": 208,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "972c785b-3ebb-4e75-a8c5-b8e1a7cba25a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://power-point-generator--dalalghumlas8.replit.app/api/generate-pptx",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $('Parse AI Result').item.json.aiTitle }}"
+            },
+            {
+              "name": "author",
+              "value": "={{ $('Parse AI Result').item.json.participantName }}"
+            },
+            {
+              "name": "body",
+              "value": "={{ $('Parse AI Result').item.json.aiText }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "pptx_file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        208
+      ],
+      "id": "11696477-b3db-41f6-81a0-8e35643c091a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "function escapeHtml(text = '') {\n  return String(text)\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;')\n    .replace(/\"/g, '&quot;')\n    .replace(/'/g, '&#39;');\n}\n\nfunction cleanText(text = '') {\n  return String(text || '')\n    .replace(/TITLE\\s*:/gi, '')\n    .replace(/TEXT\\s*:/gi, '')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction findName(row = {}) {\n  const keys = Object.keys(row);\n\n  const direct =\n    row['الأسم'] ||\n    row['الاسم'] ||\n    row['الإسم'] ||\n    row['اسم'] ||\n    row['اسم المشارك'];\n\n  if (direct) return cleanText(direct);\n\n  const nameKey = keys.find(k =>\n    k.replace(/\\s/g, '').includes('اسم') ||\n    k.replace(/\\s/g, '').includes('الأسم') ||\n    k.replace(/\\s/g, '').includes('الاسم')\n  );\n\n  return nameKey ? cleanText(row[nameKey]) : '';\n}\n\nconst formItems = $('New Form Submission').all();\nconst parsedItems = $('Parse AI Result').all();\n\nconst totalItems = Math.max(formItems.length, parsedItems.length);\n\nreturn Array.from({ length: totalItems }, (_, index) => {\n  const formRow = formItems[index]?.json || {};\n  const parsed = parsedItems[index]?.json || {};\n\n  const title = cleanText(\n    parsed.aiTitle ||\n    parsed['AI Title'] ||\n    formRow['AI Title'] ||\n    'عنوان الومضة'\n  );\n\n  const bodyText = cleanText(\n    parsed.aiText ||\n    parsed['AI Output'] ||\n    formRow['AI Output'] ||\n    'لا يوجد نص لعرضه.'\n  );\n\n  const author = cleanText(\n    parsed.participantName ||\n    parsed['الأسم'] ||\n    parsed['الاسم'] ||\n    findName(formRow)\n  );\n\n  const displayAuthor = author || 'لم يتم سحب الاسم';\n\n  const svg = `\n  <svg width=\"1080\" height=\"1080\" viewBox=\"0 0 1080 1080\" xmlns=\"http://www.w3.org/2000/svg\">\n    <defs>\n      <linearGradient id=\"bg-${index}\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">\n        <stop offset=\"0%\" stop-color=\"#0A7FEF\"/>\n        <stop offset=\"100%\" stop-color=\"#0759B9\"/>\n      </linearGradient>\n\n      <linearGradient id=\"dark-${index}\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">\n        <stop offset=\"0%\" stop-color=\"#073C76\"/>\n        <stop offset=\"100%\" stop-color=\"#052D5D\"/>\n      </linearGradient>\n\n      <style>\n        .arabic {\n          font-family: Tahoma, Arial, sans-serif;\n          direction: rtl;\n          text-align: right;\n          color: white;\n          box-sizing: border-box;\n        }\n\n        .hashtag {\n          font-size: 30px;\n          font-weight: 800;\n          line-height: 1.2;\n        }\n\n        .title {\n          font-size: 46px;\n          font-weight: 900;\n          line-height: 1.25;\n        }\n\n        .author {\n          display: inline-block;\n          background: rgba(0,0,0,0.48);\n          border-radius: 5px;\n          padding: 7px 14px;\n          font-size: 24px;\n          font-weight: 800;\n          line-height: 1.2;\n        }\n\n        .body {\n          font-size: 25px;\n          font-weight: 700;\n          line-height: 1.55;\n          white-space: normal;\n          overflow: hidden;\n        }\n\n        .club-main {\n          font-size: 36px;\n          font-weight: 900;\n          line-height: 1.1;\n        }\n\n        .club-sub {\n          font-size: 20px;\n          font-weight: 600;\n          opacity: 0.9;\n          margin-top: 6px;\n        }\n      </style>\n    </defs>\n\n    <rect width=\"1080\" height=\"1080\" fill=\"url(#bg-${index})\"/>\n\n    <polygon points=\"0,0 1080,0 1080,520 900,620 0,80\" fill=\"#0B64C6\" opacity=\"0.38\"/>\n    <polygon points=\"0,120 165,40 1035,560 870,645\" fill=\"#1B8CFF\" opacity=\"0.62\"/>\n    <polygon points=\"45,240 1045,760 1045,1080 45,1080\" fill=\"url(#dark-${index})\"/>\n\n    <foreignObject x=\"620\" y=\"130\" width=\"390\" height=\"60\">\n      <div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"arabic hashtag\">\n        💡 #ومضة_علم\n      </div>\n    </foreignObject>\n\n    <foreignObject x=\"250\" y=\"190\" width=\"735\" height=\"130\">\n      <div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"arabic title\">\n        ${escapeHtml(title)}\n      </div>\n    </foreignObject>\n\n    <foreignObject x=\"630\" y=\"315\" width=\"360\" height=\"65\">\n      <div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"arabic\">\n        <span class=\"author\">${escapeHtml(displayAuthor)} ✍</span>\n      </div>\n    </foreignObject>\n\n    <foreignObject x=\"105\" y=\"410\" width=\"850\" height=\"390\">\n      <div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"arabic body\">\n        ${escapeHtml(bodyText)}\n      </div>\n    </foreignObject>\n\n    <foreignObject x=\"720\" y=\"875\" width=\"280\" height=\"100\">\n      <div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"arabic\">\n        <div class=\"club-main\">نادي علم</div>\n        <div class=\"club-sub\">الافتراضي الطلابي</div>\n      </div>\n    </foreignObject>\n  </svg>\n  `;\n\n  const fileName = `wamdat-elm-${index + 1}.svg`;\n\n  return {\n    json: {\n      fileName,\n      title,\n      bodyText,\n      author,\n      displayAuthor,\n      formKeys: Object.keys(formRow)\n    },\n    binary: {\n      canva_image: {\n        data: Buffer.from(svg, 'utf8').toString('base64'),\n        mimeType: 'image/svg+xml',\n        fileName\n      }\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        528
+      ],
+      "id": "c6b9e74f-3f8f-4c70-954c-e5203530cf75",
+      "name": "Designing Template 1"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ $('Parse AI Result').item.json[\"Submission ID\"] + \" - \" + ($('Parse AI Result').item.json.aiTitle || \"ومضة علم\") }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1iSJtymhqmkzf_KX3ERlkvj65V4ORvRZ5",
+          "mode": "list",
+          "cachedResultName": "ومضة_علم",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1iSJtymhqmkzf_KX3ERlkvj65V4ORvRZ5"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1168,
+        208
+      ],
+      "id": "becb9fd1-fd32-484c-adb0-1e9e0ceda5d4",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "nhlgnrabj9eyhMNj",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "New Form Submission": {
+      "main": [
+        [
+          {
+            "node": "AI Content Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Content Processor": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save AI Output to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Save Links to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Links to Sheet": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Content Processor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Result": {
+      "main": [
+        [
+          {
+            "node": "Save AI Output to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "availableInMCP": false,
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
